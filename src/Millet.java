@@ -1,3 +1,5 @@
+import Crop.Crop;
+
 public class Millet extends Crop {
 
     public Millet() {

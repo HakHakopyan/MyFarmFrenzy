@@ -2,6 +2,7 @@ package Storage;
 
 import java.util.ArrayList;
 import java.util.List;
+import Crop.*;
 
 public class Storage{
     private List<Rack> racks;

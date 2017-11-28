@@ -1,3 +1,5 @@
+import Crop.Crop;
+
 public abstract class Plant extends Generator {
     final  int READY_TYME;
     final Season season;
@@ -25,7 +27,7 @@ public abstract class Plant extends Generator {
 
     /**
      * return the crop that our plant gave
-     * @return new Crop.Crop
+     * @return new Crop.Crop.Crop.Crop
      */
     @Override
     public Boolean deliveryIsPossible() {

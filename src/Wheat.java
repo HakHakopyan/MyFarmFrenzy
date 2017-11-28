@@ -1,3 +1,5 @@
+import Crop.Crop;
+
 /**
  * wheat [wi:t] пшеница
  */

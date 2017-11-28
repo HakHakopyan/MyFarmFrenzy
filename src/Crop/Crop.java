@@ -1,3 +1,6 @@
+package Crop;
+import Cost.Cost;
+
 /**
  * crop [cra:p] - урожай
  */

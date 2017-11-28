@@ -1,3 +1,5 @@
+package Checker;
+
 import Storage.Rack;
 
 public class SimilarityChecker {

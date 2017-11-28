@@ -6,7 +6,7 @@ public class FarmFrenzy {
         System.out.println("Farm Frenzy");
 
         /*
-        Arable<Cost.Cost> arable = new Arable<>();
+        Arable<Cost.Cost.Cost.Cost> arable = new Arable<>();
         arable.setT(new Generator.Plant.Herb.Wheat());
         System.out.println(arable.getT().getClass());
         */

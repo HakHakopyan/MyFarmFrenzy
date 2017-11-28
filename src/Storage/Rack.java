@@ -1,5 +1,6 @@
 package Storage;
-
+import Crop.*;
+import Checker.*;
 import java.util.Stack;
 
 public class Rack <C extends Crop> implements Storable<C> {
