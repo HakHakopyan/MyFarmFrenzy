@@ -1,19 +1,20 @@
 import Crop.Crop;
-import Storage.Storage;
+import Storage.*;
 
 /**
  * Bookkeeper |ˈbʊkkiːpər|  — бухгалтер, счетовод
  */
 public class Bookkeeper {
 
-    public int calculateCoct(Storage storage) {
-        int rackCount = storage.getRackCount();
-        int cost = 0;
-        for (int i = 1; i <= rackCount; i++) {
-
+    public static int calculateTotalCoct(Storage storage) {
+        int totalCost = 0;
+        StorageBook book = storage.getStorageBook();
+        while (!book.isEmpty()) {
+            Record record = book.getRecord();
+            totalCost += record.getCount()*record.getCost();
         }
 
-        return  cost;
+        return  totalCost;
     }
     /*
     public int calculateCost(Storage.Rack rack) {

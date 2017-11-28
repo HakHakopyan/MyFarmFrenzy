@@ -1,3 +1,5 @@
+package main;
+
 public interface ProductionTimes {
     /**
      * number of seconds that corresponds to the production timer unit

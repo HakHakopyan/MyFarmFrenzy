@@ -7,20 +7,25 @@ public class Rack <C extends Crop> implements Storable<C> {
     /**
      * Max count of shelf
      */
-    int shelfMaxCount;
+    private int shelfMaxCount;
     /**
      * Contais objects -> our crops
      */
-    Stack<C> shelfs;
+    private Stack<C> shelfs;
     /**
-     * The name of objects that are on the shelves
+     * The storedName of objects that are on the shelves
      * all objects of the same
      */
-    String name = "";
+    private String storedName = "";
+
+    public int getShelfCount() {
+        return shelfCount;
+    }
+
     /**
      * count of shelves that are used
      */
-    int shelfCount;
+    private int shelfCount;
 
     public Rack(int shelfMaxCountCount) {
 
@@ -49,18 +54,24 @@ public class Rack <C extends Crop> implements Storable<C> {
         return shelfs.pop();
     }
 
+    public String getSroredName() {
+        return storedName;
+    }
+
     @Override
-    public boolean addStored(C c) {
+    public boolean setStored(C c) {
         if (c == null ) {
             return false;
         }
         if (shelfs.empty()) {
-            name = SimilarityChecker.getClassName(c);
+            storedName = SimilarityChecker.getClassName(c);
         }
         if (this.shelfCount < this.shelfMaxCount) {
             shelfs.push(c);
+            shelfCount++;
             return true;
         }
+
         return false;
     }
 }

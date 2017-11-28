@@ -1,3 +1,5 @@
+package Crop.Cereal;
+
 import Crop.Crop;
 
 public class Cereal extends Crop {

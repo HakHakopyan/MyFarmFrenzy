@@ -1,4 +1,8 @@
+package Base.Plant;
+
+import Base.Generator;
 import Crop.Crop;
+import Season.Season;
 
 public abstract class Plant extends Generator {
     final  int READY_TYME;
