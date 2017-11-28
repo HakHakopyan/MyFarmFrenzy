@@ -1,3 +1,5 @@
+package Storage;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,5 +23,7 @@ public class Storage{
     public int getRackCount() {
         return racks.size();
     }
+
+
 
 }

@@ -1,3 +1,5 @@
+import Storage.Rack;
+
 public class SimilarityChecker {
     static <T,V> boolean isSimilarity(T t, V v) {
         return  t.getClass().getName().equals(v.getClass().getName());

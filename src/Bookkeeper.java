@@ -1,3 +1,5 @@
+import Storage.Storage;
+
 /**
  * Bookkeeper |ˈbʊkkiːpər|  — бухгалтер, счетовод
  */
@@ -12,16 +14,17 @@ public class Bookkeeper {
 
         return  cost;
     }
-
-    public int calculateCost(Rack rack) {
+    /*
+    public int calculateCost(Storage.Rack rack) {
         int cost = 0;
         if (rack != null) {
-            Rack rackBuf = new Rack(rack.getShelfCount());
+            Storage.Rack rackBuf = new Storage.Rack(rack.getShelfMaxCount());
             //Set<> s;
         }
 
         return  cost;
     }
+    */
     public  <C extends Crop> int calculateCost(C c) {
         return c.getCost();
     }
