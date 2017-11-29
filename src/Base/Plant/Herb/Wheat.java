@@ -9,7 +9,7 @@ import main.ProductionTimes;
 /**
  * wheat [wi:t] пшеница
  */
-public class Wheat extends Herb {
+public class Wheat extends CerealHerb {
     Wheat() {
         super(ProductionTimes.WHEAT, Season.SUMMER);
     }
