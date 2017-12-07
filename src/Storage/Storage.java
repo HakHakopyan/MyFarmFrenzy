@@ -1,39 +1,40 @@
 package Storage;
 
-import java.util.ArrayList;
-import java.util.List;
+import Visitor.*;
 import Crop.*;
 
-public class Storage{
-    private List<Rack> racks;
-    private int rackCount;
+import java.util.*;
 
-    public Storage(int rackCount) {
-        racks = new ArrayList<>();
-        this.rackCount = rackCount;
+public class Storage<C extends Cropable> implements Storable{
+    private Map<String, C>  myCrops;
+
+    public Storage() {
+        super();
+        this.myCrops = new HashMap<>();
+        this.myCrops.clear();
     }
 
-    public <C extends Crop> boolean setCrop(C c) {
-        return  false;
+    @Override
+    public void store(Cropable newCrop) {
+        String cropName = newCrop.getClass().getSimpleName();
+        if (myCrops.containsKey(cropName)) {
+            Cropable crop = myCrops.get(cropName);
+            crop.setCount(crop.getCount() + newCrop.getCount());
+            newCrop = null;
+        } else
+            myCrops.put(newCrop.getClass().getSimpleName(),(C) newCrop);
     }
 
-    public Crop getCrop() {
-        return null;
+    @Override
+    public void doEmpty() {
+        myCrops.clear();
     }
 
-    public int getRackCount() {
-        return racks.size();
-    }
-
-    public  StorageBook getStorageBook() {
-        StorageBook book = new StorageBook();
-        for (Rack rack:racks) {
-            Crop crop = rack.getStored();
-            book.setRecord(new Record(rack.getSroredName(), rack.getShelfCount(), crop.getCost()));
-            rack.setStored(crop);
+    @Override
+    public void acceptVisit(Visitor v) {
+        Set<Map.Entry<String, C>> set = myCrops.entrySet();
+        for (Map.Entry<String, C> me : set) {
+            me.getValue().acceptVisit(v);
         }
-
-        return  book;
     }
-
 }

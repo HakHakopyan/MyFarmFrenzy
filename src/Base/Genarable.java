@@ -3,10 +3,9 @@ package Base;
 import Crop.Crop;
 
 /**
- * getDelivery() -  Factory Method;
+ * getDelivery() -  Factoriable Method;
  */
-public interface Genarable extends Timable {
-    //public void addTime();
+public interface Genarable {
+    //@What(description = "Only Crop inheritor")
     Crop getDelivery();
-    Boolean deliveryIsPossible();
 }

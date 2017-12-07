@@ -1,23 +1,14 @@
 package Base;
 
-import Crop.Crop;
-
 /**
- * Factory method
+ * Factoriable method
  */
-public abstract class Generator implements Genarable {
-    protected final  int READY_TYME;
+public abstract class Generator implements Genarable, ObserverTime {
+    protected final  int readyTime;
     protected int timer = 0;
 
     protected Generator(int readyTime) {
-        this.READY_TYME = readyTime;
+        this.readyTime = readyTime;
     }
-
-    @Override
-    abstract public void addTime();
-    @Override
-    abstract public Crop getDelivery();
-    @Override
-    abstract  public Boolean deliveryIsPossible();
 }
 
