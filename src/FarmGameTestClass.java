@@ -73,8 +73,8 @@ public class FarmGameTestClass implements Observer {
 
         try
         {
-
-            BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            BufferedReader input = new BufferedReader();
             while((line = input.readLine()) != null)
             {
                 System.out.println(line);
