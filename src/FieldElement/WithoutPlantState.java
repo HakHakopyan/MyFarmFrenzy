@@ -35,7 +35,7 @@ public class WithoutPlantState implements ArableState {
     }
 
     @Override
-    public Cropable getDelivery() {
+    public Cropable getCrop() {
         return null;
     }
 

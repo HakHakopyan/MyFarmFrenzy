@@ -1,29 +1,27 @@
 package Plant;
 
-import Base.ObserverTime;
+import Base.Costable;
 import Command.Command;
-import Const.PlantConst;
 import Crop.*;
-import Crop.Fruit.Apple;
 import Plant.State.PlantState;
 import Plant.State.*;
 import Season.Season;
 
-public abstract class Plant implements Plantable, Cloneable {
+public abstract class Plant implements Plantable, Cloneable, Costable {
     protected PlantState myState;
     /**
      * Время жизни растения
      */
-    public int lifeTime;
+    public int myLifeTime;
 
-    protected int cost;
+    protected double myCost;
 
     public Season season;
 
     public Cropable myCrop;
 
-    public Plant(int lifeTime, int cost, Season season) {
-        this.lifeTime = lifeTime;
+    public Plant(int lifeTime, double cost, Season season) {
+        this.myLifeTime = lifeTime;
         changeState(new StateCrop(this));
     }
 
@@ -38,13 +36,13 @@ public abstract class Plant implements Plantable, Cloneable {
     }
 
     // Получить урожай
-    public Cropable getDelivery() {
-        return this.myState.GetCrop();
+    public Cropable getCrop() {
+        return this.myState.getCrop();
     }
 
     public boolean reduceLifeTime() {
-        this.lifeTime--;
-        if (this.lifeTime > 0)
+        this.myLifeTime--;
+        if (this.myLifeTime > 0)
             return true;
         return false;
     }
@@ -55,7 +53,8 @@ public abstract class Plant implements Plantable, Cloneable {
     }
 
     public void destroyCrop() {
-        this.myCrop = null;
+        this.myCrop.setCount(0);
+        this.myCrop.setCost(0);
     }
 
     /**
@@ -74,9 +73,18 @@ public abstract class Plant implements Plantable, Cloneable {
     }
 
     public void doComand(Command com) {
-        this.myState.doComand(com);
     }
 
     @Override
    public abstract Plantable clone() throws CloneNotSupportedException;
+
+    @Override
+    public double getCost() {
+        return myCost;
+    }
+
+    @Override
+    public void setCost(double newCost) {
+        this.myCost = newCost;
+    }
 }

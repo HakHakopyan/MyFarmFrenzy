@@ -1,5 +1,7 @@
 package Base;
 
+import Observer.ObserverTime;
+
 /**
  * Factoriable method
  */

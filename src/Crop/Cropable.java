@@ -1,11 +1,11 @@
 package Crop;
 
-import Base.Countable;
-import Base.ObserverTime;
-import Base.Costable;
+import Base.*;
+import Observer.ObserverSeason;
+import Observer.ObserverTime;
 import Visitor.Visitable;
 
-public interface Cropable extends ObserverTime, Countable, Costable, Visitable {
+public interface Cropable extends ObserverTime, ObserverSeason, Countable, Costable, Visitable, Representable {
 
     /**
      * rotten |ˈrɑːtn|  — гнилой, испорченный

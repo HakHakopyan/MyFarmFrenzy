@@ -8,4 +8,8 @@ public class Apple extends Crop {
         super(CropConst.APPLE_RT,CropConst.APPLE_SL, CropConst.APPLE_COUNT, CropConst.APPLE_COST);
     }
 
+    @Override
+    public String getRepresentation() {
+        return this.getClass().getSimpleName() + " " + this.myState.getRepresentation();
+    }
 }

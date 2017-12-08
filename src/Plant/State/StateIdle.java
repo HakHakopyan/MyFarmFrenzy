@@ -16,16 +16,6 @@ public class StateIdle extends AbstrPlantState{
     }
 
     @Override
-    public String getRepresentation(String name) {
-        return name + " Idle";
-    }
-
-    @Override
-    public Cropable GetCrop() {
-        return null;
-    }
-
-    @Override
     public void updateTime() {
         if (!this.myPlant.reduceLifeTime())
             this.myPlant.changeState(new StateDie(this.myPlant));
@@ -43,12 +33,23 @@ public class StateIdle extends AbstrPlantState{
     }
 
     @Override
+    public Cropable getCrop() {
+        throw new NullPointerException("Plant " + this.getRepresentation() + " cann't give Crop!");
+        /*
+        Cropable retCrop = this.myPlant.myCrop;
+        this.myPlant.newCrop();
+        this.myPlant.myCrop.changeSeason(Season.WINTER);
+        return retCrop;
+        */
+    }
+
+    @Override
     public boolean isCropReady() {
         return false;
     }
 
     @Override
-    public void doComand(Command com) {
-
+    public String getRepresentation() {
+        return "Idle";
     }
 }

@@ -7,7 +7,7 @@ import Season.Season;
 
 public class AppleTree extends Plant {
 
-    public AppleTree(int lifeTimem, int cost) {
+    public AppleTree(int lifeTimem, double cost) {
         super(lifeTimem, cost, Season.WINTER);
     }
 
@@ -18,11 +18,11 @@ public class AppleTree extends Plant {
 
     @Override
     public String getRepresentation() {
-        return this.myState.getRepresentation(this.getClass().getSimpleName());
+        return this.getClass().getSimpleName() + " " + myState.getRepresentation();
     }
 
     @Override
     public Plantable clone() throws CloneNotSupportedException {
-        return new AppleTree(this.lifeTime, this.cost);
+        return new AppleTree(this.myLifeTime, this.myCost);
     }
 }

@@ -1,11 +1,13 @@
 package Base;
 
-import Crop.Crop;
+import Crop.*;
 
 /**
- * getDelivery() -  Factoriable Method;
+ * getCrop() -  Factoriable Method;
  */
 public interface Genarable {
     //@What(description = "Only Crop inheritor")
-    Crop getDelivery();
+    Cropable getCrop();
+
+    boolean isCropReady();
 }

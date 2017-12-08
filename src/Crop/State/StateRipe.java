@@ -1,6 +1,7 @@
 package Crop.State;
 
 import Crop.*;
+import Season.Season;
 
 /**
  * Ripe |raɪp| созрел
@@ -34,5 +35,17 @@ public class StateRipe extends AbstrCropState {
             this.myCrop.changeState(new StateRotten(this.myCrop));
         }
 
+    }
+
+    @Override
+    public void changeSeason(Season season) {
+        if (season == Season.WINTER) {
+            this.myCrop.changeState(new StateRotten(myCrop));
+        }
+    }
+
+    @Override
+    public String getRepresentation() {
+        return "Ripe";
     }
 }

@@ -2,6 +2,7 @@ package FieldElement;
 
 import Command.Command;
 import Crop.Cropable;
+import Observer.MyObservable;
 import Season.Season;
 
 import java.util.Observable;
@@ -25,7 +26,7 @@ public class GreenHouse implements Arable {
     }
 
     @Override
-    public void watchFor(Observable ob) {
+    public void watchFor(MyObservable ob) {
         ob.deleteObserver(this.myArable);
         ob.addObserver(this);
     }
@@ -36,8 +37,8 @@ public class GreenHouse implements Arable {
     }
 
     @Override
-    public Cropable getDelivery() {
-        return this.myArable.getDelivery();
+    public Cropable getCrop() {
+        return this.myArable.getCrop();
     }
 
     @Override
@@ -63,14 +64,5 @@ public class GreenHouse implements Arable {
     @Override
     public void changeSeason(Season season) {
         this.myArable.changeSeason(Season.SUMMER);
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        if (arg == null)
-            this.updateTime();
-        if (arg.getClass().equals(Season.class)) {
-            this.changeSeason(Season.SUMMER);
-        }
     }
 }

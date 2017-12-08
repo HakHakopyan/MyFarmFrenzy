@@ -1,28 +1,32 @@
 import java.util.*;
 
-import Base.ObserverTime;
-import Command.Command;
+import Observer.*;
 import Crop.*;
 import Factory.*;
 import FieldElement.*;
+import Season.Season;
 import Storage.*;
 import Visitor.Visitor;
 
 
-public class Farm implements Observer {
+public class Farm implements Observer, ObserverTime{
     Storable<Cropable> myStorage = new Storage();
 
     List<Arable> myField = new ArrayList<>();
 
     Factoriable myFactory = new Factory();
 
-    MyObserbarable myOb = new MyObserbarable();
-    MyObserbarable myExternalOb = new MyObserbarable();
+    MyObservable<Arable> myOb = new MyObservable();
+
+    MyExternalObservable myExternalOb = new MyExternalObservable();
 
     TimeThread tThread = new TimeThread();
 
+    Season mySeason = Season.SUMMER;
+
+    int myTime = 0;
+
     Farm(int arableCount, Observer externalObserver) {
-        myOb.addObserver(this);
         myExternalOb.addObserver(externalObserver);
         myFactory.registre(Plants.class);
 
@@ -58,16 +62,20 @@ public class Farm implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (arg == null) {
-            for (Arable a: this.myField) {
-                if (a.isCropReady()) {
-                    Cropable newCrop = a.getDelivery();
-                    myStorage.store(newCrop);
-                    myExternalOb.notifyObservers(newCrop);
-                }
-            }
+
         }
     }
 
+    public void checkCrop() {
+        for (Arable a: this.myField) {
+            if (a.isCropReady()) {
+                Cropable newCrop = a.getCrop();
+                myStorage.store(newCrop);
+                myExternalOb.setChanged();
+                myExternalOb.notifyObservers(newCrop);
+            }
+        }
+    }
     public List<String> getFieldRepresentation() {
         List<String> representList = new ArrayList<>();
         for (Arable ar: this.myField) {
@@ -79,5 +87,25 @@ public class Farm implements Observer {
 
     public void checkStorage(Visitor visitor) {
         this.myStorage.acceptVisit(visitor);
+    }
+
+    @Override
+    public void updateTime() {
+        myTime++;
+        if (myTime == 6) {
+            myTime = 0;
+            if (mySeason == Season.SUMMER)
+                mySeason = Season.WINTER;
+            mySeason = Season.SUMMER;
+
+            myOb.notifySeasonChange(mySeason);
+        }
+
+        if (myTime == 4) {
+            System.out.println("Hello!");
+        }
+
+        myOb.notifyTimeUpdate();
+        checkCrop();
     }
 }

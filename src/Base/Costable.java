@@ -5,5 +5,7 @@ package Base;
  */
 public interface Costable {
 
-    public int getCost();
+    public double getCost();
+
+    public void setCost(double newCost);
 }

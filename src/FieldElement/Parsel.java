@@ -5,6 +5,7 @@ import Crop.Cropable;
 import Factory.Factoriable;
 import Plant.Plantable;
 import Season.Season;
+import Observer.*;
 
 import java.util.Observable;
 
@@ -24,7 +25,7 @@ public class Parsel implements Arable {
     }
 
     @Override
-    public void watchFor(Observable ob) {
+    public void watchFor(MyObservable ob) {
         ob.addObserver(this);
     }
 
@@ -38,8 +39,8 @@ public class Parsel implements Arable {
     }
 
     @Override
-    public Cropable getDelivery() {
-        return this.myState.getDelivery();
+    public Cropable getCrop() {
+        return this.myState.getCrop();
     }
 
     @Override
@@ -70,14 +71,5 @@ public class Parsel implements Arable {
 
     public boolean plantExist() {
         return myState.plantExist();
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-            if (arg == null)
-                this.updateTime();
-            if (arg.getClass().equals(Season.class)) {
-                this.changeSeason((Season) arg);
-            }
     }
 }

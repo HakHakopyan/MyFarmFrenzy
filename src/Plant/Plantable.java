@@ -1,20 +1,20 @@
 package Plant;
 
-import Base.ObserverTime;
-import Base.Seasonable;
+import Base.*;
 import Command.Command;
 import Crop.*;
-import Plant.State.PlantState;
+import Observer.ObserverSeason;
+import Observer.ObserverTime;
 import Season.*;
 
-public interface Plantable extends Seasonable, ObserverTime{
+public interface Plantable extends ObserverSeason, ObserverTime, Representable, Genarable{
 
     //public void changeState(PlantState state);
 
     abstract public String getRepresentation();
 
     // Получить урожай
-    public Cropable getDelivery();
+    public Cropable getCrop();
 
     /**
      * урожай созрел ?

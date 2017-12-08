@@ -28,8 +28,8 @@ public class PlantExsistState implements ArableState{
     }
 
     @Override
-    public Cropable getDelivery() {
-        return this.myParsel.myPlant.getDelivery();
+    public Cropable getCrop() {
+        return this.myParsel.myPlant.getCrop();
     }
 
     @Override

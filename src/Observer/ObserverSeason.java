@@ -1,7 +1,7 @@
-package Base;
+package Observer;
 
 import Season.Season;
 
-public interface Seasonable {
+public interface ObserverSeason {
     public void changeSeason(Season season);
 }

@@ -1,4 +1,3 @@
-import Crop.Crop;
 import Crop.Cropable;
 import Factory.*;
 import FieldElement.Arable;
@@ -6,21 +5,20 @@ import FieldElement.GreenHouse;
 import FieldElement.Parsel;
 import Plant.Plantable;
 import Plant.Tree.AppleTree;
-import Season.Season;
 import Storage.*;
-import Visitor.Visitor;
 import Visitor.VisitorTotalCost;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 
-public class FarmGameTestClass implements Observer {
+public class FarmGameTestClass{
     public static void main(String[] args) {
-        Plantable apple = new AppleTree(20*12, 10);
+
+        /*
+        Plantable apple = new AppleTree(20 * 12, 10);
         Factoriable factory = new Factory();
         factory.registre(Plants.class);
         Arable gHouse = new GreenHouse(new Parsel(factory));
@@ -30,10 +28,10 @@ public class FarmGameTestClass implements Observer {
 
         Storable<Cropable> myStorage = new Storage();
         boolean bool = true;
-        for(int i = 1; i < 400; i++) {
+        for (int i = 1; i < 400; i++) {
             apple.updateTime();
             if (bool) {
-                apple.doComand((x) -> x.setCount((int)(x.getCount()*0.2 + x.getCount())));
+                apple.doComand((x) -> x.setCount((int) (x.getCount() * 0.2 + x.getCount())));
                 bool = false;
             }
             if (apple.isDie()) {
@@ -42,7 +40,7 @@ public class FarmGameTestClass implements Observer {
             }
             if (apple.isCropReady()) {
                 bool = true;
-                Cropable crop = apple.getDelivery();
+                Cropable crop = apple.getCrop();
                 System.out.println("i = " + i + " " + crop.getClass().getSimpleName() + " = " + crop.getCount());
 
                 myStorage.store(crop);
@@ -59,35 +57,48 @@ public class FarmGameTestClass implements Observer {
             t.start();
         }
         */
-        WorkWithConsole consW = new WorkWithConsole();
-        Farm farm = new Farm(4, consW);
+
+        FarmNewsListener newsL = new FarmNewsListener();
+        Farm farm = new Farm(4, newsL);
         farm.setPlant("AppleTree", 1);
         farm.setPlant("AppleTree", 3);
         List<String> sRep = farm.getFieldRepresentation();
         int i = 1;
-        for (String s: sRep) {
+        for (String s : sRep) {
             System.out.println(i + " " + s);
             i++;
         }
 
+        while (true) {
+            try {
+                String userCom = readCoomandFromConsole();
+                switch (userCom) {
+                    case "" :
+                        farm.updateTime();
+                        if (newsL.isNews()) {
+                            for (String news: newsL.getNews())
+                            System.out.println(news);
+                        }
+                        break;
+                }
 
-        try
-        {
-            String line;
-            BufferedReader input = new BufferedReader();
-            while((line = input.readLine()) != null)
-            {
-                System.out.println(line);
+                if (userCom.equals("E"))
+                    break;
+
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
             }
-            input.close();
-        }
-        catch(Exception e)
-        {
-            //Log.e(TAG,e.toString(),e);
         }
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
+    /**
+     *  read expression from the console and return it
+     * @return type String, expression entered by the user
+     * @throws IOException when problems with console
+     */
+    public  static  String readCoomandFromConsole() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        return  br.readLine();
     }
 }

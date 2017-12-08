@@ -2,6 +2,8 @@ package Crop;
 
 import Crop.State.CropState;
 import Crop.State.StateRipen;
+import Crop.State.StateRotten;
+import Season.Season;
 import Visitor.Visitor;
 
 /**
@@ -19,20 +21,20 @@ public abstract class Crop implements Cropable {
     /**
      * Стоимость урожая
      */
-    int cost;
+    double myCost;
 
     /**
      * количество урожая
      */
     int count;
 
-    CropState myState;
+    protected CropState myState;
 
-    protected Crop(int rTime, int sLife, int count, int cost) {
+    protected Crop(int rTime, int sLife, int count, double cost) {
         this.ripenTime = rTime;
         this.shelfLife = sLife;
         setCount(count);
-        this.cost = cost;
+        this.myCost = cost;
 
         changeState(new StateRipen(this));
     }
@@ -95,8 +97,13 @@ public abstract class Crop implements Cropable {
     }
 
     @Override
-    public int getCost() {
-        return this.cost;
+    public double getCost() {
+        return this.myCost;
+    }
+
+    @Override
+    public void setCost(double newCost) {
+        this.myCost = newCost;
     }
 
     @Override
@@ -114,5 +121,12 @@ public abstract class Crop implements Cropable {
     @Override
     public void acceptVisit(Visitor v) {
         v.visitCrop(this);
+    }
+
+    @Override
+    public void changeSeason(Season season) {
+        if (season.ordinal() >= Season.WINTER.ordinal()) {
+            this.changeState(new StateRotten(this));
+        }
     }
 }

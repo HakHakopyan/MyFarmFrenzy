@@ -17,21 +17,22 @@ public class StateCrop extends AbstrPlantState {
     }
 
     @Override
-    public String getRepresentation(String name) {
+    public String getRepresentation() {
         if (myPlant.isCropReady())
-            return name + " Ready!";
-        return name + "Ripen...";
+            return " Ready!";
+        return "Ripen...";
     }
 
     @Override
-    public Cropable GetCrop() {
-        if (myPlant.isCropReady()) {
-            Cropable bufCrop = myPlant.myCrop;
-            myPlant.newCrop();
-
-            return bufCrop;
+    public Cropable getCrop() {
+        Cropable retCrop = myPlant.myCrop;
+        myPlant.newCrop();
+        if (retCrop.isRipen()) {
+            retCrop.setCost(0);
+            retCrop.setCount(0);
         }
-        return null;
+            return retCrop;
+
     }
 
     @Override
@@ -56,15 +57,13 @@ public class StateCrop extends AbstrPlantState {
         }
     }
 
-    @Override
+
     public boolean isDie() {
         return false;
     }
 
-    @Override
+
     public boolean isCropReady() {
-        if (this.myPlant.myCrop == null)
-            return false;
         return this.myPlant.myCrop.isRipe();
     }
 
@@ -73,4 +72,5 @@ public class StateCrop extends AbstrPlantState {
             com.Execute(this.myPlant.myCrop);
         }
     }
+
 }

@@ -1,4 +1,5 @@
 package Plant.State;
+import Crop.Cropable;
 import Plant.*;
 
 public abstract class AbstrPlantState implements PlantState{

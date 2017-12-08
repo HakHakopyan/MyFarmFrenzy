@@ -14,13 +14,8 @@ public class StateDie extends AbstrPlantState {
     }
 
     @Override
-    public String getRepresentation(String name) {
-        return name + " Die";
-    }
-
-    @Override
-    public Cropable GetCrop() {
-        return null;
+    public String getRepresentation() {
+        return " Die";
     }
 
     @Override
@@ -28,7 +23,7 @@ public class StateDie extends AbstrPlantState {
     }
 
     @Override
-    public void changeSeason(Season season){
+    public void changeSeason(Season season) {
     }
 
     @Override
@@ -37,12 +32,18 @@ public class StateDie extends AbstrPlantState {
     }
 
     @Override
+    public Cropable getCrop() {
+        throw new NullPointerException("Plant " + this.getRepresentation() + "cann't give Crop!");
+        /*
+        Cropable retCrop = this.myPlant.myCrop;
+        this.myPlant.newCrop();
+        this.myPlant.myCrop.changeSeason(Season.WINTER);
+        return retCrop;
+        */
+    }
+
     public boolean isCropReady() {
         return false;
     }
 
-    @Override
-    public void doComand(Command com) {
-
-    }
 }
