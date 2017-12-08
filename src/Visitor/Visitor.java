@@ -7,4 +7,5 @@ public interface Visitor {
     public void visitStorage(Storable storage);
 
     public void visitCrop(Cropable crop);
+    public int getValue();
 }

@@ -50,11 +50,13 @@ public class PlantExsistState implements ArableState{
     @Override
     public void updateTime() {
         this.myParsel.myPlant.updateTime();
+        /*
         if (isPlantDie) {
             this.myParsel.changeState(new WithoutPlantState(this.myParsel));
         }
         if (this.myParsel.isDie())
             this.isPlantDie = true;
+        */
     }
 
     @Override

@@ -36,7 +36,7 @@ public class WithoutPlantState implements ArableState {
 
     @Override
     public Cropable getCrop() {
-        return null;
+        throw  new NullPointerException("Plant not exist!");
     }
 
     @Override

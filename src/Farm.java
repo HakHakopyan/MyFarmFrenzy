@@ -6,10 +6,10 @@ import Factory.*;
 import FieldElement.*;
 import Season.Season;
 import Storage.*;
-import Visitor.Visitor;
+import Visitor.*;
 
 
-public class Farm implements Observer, ObserverTime{
+public class Farm implements Observer, ObserverTime, Visitable {
     Storable<Cropable> myStorage = new Storage();
 
     List<Arable> myField = new ArrayList<>();
@@ -71,6 +71,7 @@ public class Farm implements Observer, ObserverTime{
             if (a.isCropReady()) {
                 Cropable newCrop = a.getCrop();
                 myStorage.store(newCrop);
+
                 myExternalOb.setChanged();
                 myExternalOb.notifyObservers(newCrop);
             }
@@ -89,23 +90,32 @@ public class Farm implements Observer, ObserverTime{
         this.myStorage.acceptVisit(visitor);
     }
 
+    int newTime = 0;
     @Override
     public void updateTime() {
         myTime++;
-        if (myTime == 6) {
-            myTime = 0;
-            if (mySeason == Season.SUMMER)
-                mySeason = Season.WINTER;
-            mySeason = Season.SUMMER;
-
-            myOb.notifySeasonChange(mySeason);
-        }
-
-        if (myTime == 4) {
-            System.out.println("Hello!");
-        }
+        newTime++;
 
         myOb.notifyTimeUpdate();
         checkCrop();
+
+        if (myTime == 6) {
+                System.out.println("Yep! " + newTime);
+            myTime = 0;
+            if (mySeason == Season.SUMMER)
+                mySeason = Season.WINTER;
+            else
+                mySeason = Season.SUMMER;
+
+            myOb.notifySeasonChange(mySeason);
+
+            myExternalOb.setChanged();
+            myExternalOb.notifyObservers(mySeason);
+        }
+    }
+
+    @Override
+    public void acceptVisit(Visitor v) {
+        this.myStorage.acceptVisit(v);
     }
 }

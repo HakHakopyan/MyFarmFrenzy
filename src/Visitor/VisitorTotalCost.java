@@ -17,7 +17,7 @@ public class VisitorTotalCost implements Visitor {
         this.totalCost += crop.getCost()*crop.getCount();
     }
 
-    public int getTotalCost() {
+    public int getValue() {
         return totalCost;
     }
 }

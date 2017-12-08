@@ -1,4 +1,5 @@
 import Crop.Crop;
+import Season.Season;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -12,12 +13,15 @@ public class FarmNewsListener implements Observer{
         if (arg.getClass().getSuperclass().equals(Crop.class)) {
             news.add("Получили урожай: " +
                     arg.getClass().getSimpleName() + " " + ((Crop)arg).getCount() + "шт.");
-            myIsNews = true;
-        }
+        } else
+            if (arg.getClass().equals(Season.class)) {
+                news.add("Change Season: " + arg);
+            }
+
     }
 
     public boolean isNews() {
-        return myIsNews;
+        return news.size() > 0;
     }
 
     public List<String> getNews() {
