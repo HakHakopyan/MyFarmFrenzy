@@ -4,9 +4,17 @@ import Const.PlantConst;
 import Plant.Tree.AppleTree;
 import Annotations.*;
 
+/**
+ * class Plants contain the methods which give the Plants instance
+ */
 @What("Plant")
-public class Plants {
+@GetPlant
+public class PlantInstances {
 
+    /**
+     * this method return AppleTree instance
+     * @return AppleTree instance
+     */
     @GetPlant
     @What("AppleTree")
     AppleTree getAppleTree() {

@@ -8,9 +8,11 @@ import Plant.Plantable;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class Factory implements Factoriable {
-    private HashMap myPlants = new HashMap<String, Plantable>();
+    private Map myPlants = new HashMap<String, Plantable>();
 
     @Override
     public Plantable createPlant(String name) {
@@ -33,10 +35,8 @@ public class Factory implements Factoriable {
 
     @Override
     public void registre(Class cl) {
-        if (cl.isAnnotationPresent(What.class)){
-            What nameAnno = (What) cl.getAnnotation(What.class);
-            if (nameAnno.value().toString().equals("Plant"))
-                registrePlant(cl);
+        if (cl.isAnnotationPresent(GetPlant.class)){
+            registrePlant(cl);
         }
     }
 
@@ -58,5 +58,21 @@ public class Factory implements Factoriable {
                 }
             }
         }
+    }
+
+    /**
+     * gives the names of plants that we can create with the help of this factory
+     * @return Plant Names which we can create with
+     */
+    @Override
+    public String[] getPlantNames() {
+        String[] strings = new String[myPlants.size()];
+        int i=0;
+        for (Object key: myPlants.keySet()) {
+            strings[i] = key.toString();
+            i++;
+        }
+
+        return strings;
     }
 }

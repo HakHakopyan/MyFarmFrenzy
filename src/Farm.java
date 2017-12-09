@@ -30,7 +30,7 @@ public class Farm implements Observer, ObserverTime, Visitable, Commandable {
 
     Farm(int arableCount, Observer externalObserver) {
         myExternalOb.addObserver(externalObserver);
-        myFactory.registre(Plants.class);
+        myFactory.registre(Factory.PlantInstances.class);
 
         for (int i = 1; i <= arableCount; i++) {
             addArable();
@@ -140,5 +140,9 @@ public class Farm implements Observer, ObserverTime, Visitable, Commandable {
                 ar.doCommand(commandList);
             }
         }
+    }
+
+    public String[] getPlantNames() {
+        return myFactory.getPlantNames();
     }
 }

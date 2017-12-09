@@ -65,7 +65,7 @@ public class FarmConsoleGame {
             case "" :
                 updateTime(1);
                 break;
-            case "M" :
+            case "W" :
                 System.out.println("Wallet -> " + myMoney.toString());
                 break;
             case "I" :
@@ -81,6 +81,8 @@ public class FarmConsoleGame {
             case "C" :
                 System.out.println("The total cost of the crop in the storage: " + calculateTotalStorageCost());
                 break;
+            default:
+                System.out.println(userCom + " -> Wrong command");
         }
 
         return true;
@@ -132,14 +134,50 @@ public class FarmConsoleGame {
     }
 
     static void subUserCom(String[] subStr) {
+        try {
+            if (isNumber(subStr[0])) {
+                boolean isPlantExsist = false;
+                for (String name : farm.getPlantNames()) {
+                    String upCaseName = name.toUpperCase();
+                    if (upCaseName.indexOf(subStr[1]) == 0) {
+                        farm.setPlant(name, Integer.getInteger(subStr[0]));
+                        isPlantExsist = true;
+                    }
+                }
+                if (!isPlantExsist) System.out.println("Plant with firs letter");
+            }
+        }
+        catch (IllegalArgumentException ex) {
+            System.out.println("Not correct position -> " + subStr[0]);
+        }
+    }
 
+    static boolean setPlantIfPossible(int positopn, String nameFirsLetters) {
+        try {
+                boolean isPlantExsist = false;
+                for (String name : farm.getPlantNames()) {
+                    String upCaseName = name.toUpperCase();
+                    if (upCaseName.indexOf(nameFirsLetters) == 0) {
+                        farm.setPlant(name, Integer.getInteger(nameFirsLetters));
+                        isPlantExsist = true;
+                        break;
+                    }
+                }
+                if (!isPlantExsist) System.out.println("Plant with firs letters [" +
+                        nameFirsLetters + "] is not exist");
+        }
+        catch (IllegalArgumentException ex) {
+            System.out.println("Not correct position -> " + positopn);
+        }
     }
 
     static void presetnInformation() {
-        System.out.println("Команды:");
+        System.out.println("Commands:");
 
-        System.out.println("    M -> amount of accumulated money -> wallet");
-        System.out.println("    <number> <Plant name first litter -> set selected plant to Field element with <number>");
+        System.out.println("    <Enter> -> one update");
+        System.out.println("    <Number> -> number of updates");
+        System.out.println("    W -> amount of accumulated money -> wallet");
+        System.out.println("    <Number> <Plant name first letters -> set selected plant to Field element with <number>");
         System.out.println("    S -> sell the whole crop in storage");
         //System.out.println("    C <Command> -> execute a command by name <Command>");
         System.out.println("    C -> calculate the total cost of the crop in the storage");
@@ -147,6 +185,7 @@ public class FarmConsoleGame {
         System.out.println("        P -> to plow the field. Cost = field elemet count*1, Crop count += 20%");
         System.out.println("        F -> to fertilize the field. Cost = field element count*2, Crop count += 30%");
         System.out.println("    E -> exit");
+        System.out.println("Separate all compound commands with spaces ;) A good game from Hakop... :)");
     }
 
     static void writeNews(FarmNewsListener news) {
