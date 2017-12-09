@@ -7,6 +7,7 @@ import Plant.Plantable;
 import Season.Season;
 import Observer.*;
 
+import java.util.List;
 import java.util.Observable;
 
 public class Parsel implements Arable {
@@ -54,9 +55,8 @@ public class Parsel implements Arable {
     }
 
     @Override
-    public void doComand(Command com) {
-        if (this.myPlant != null)
-            this.myPlant.doComand(com);
+    public void doCommand(List<Command> commandList) {
+           this.myState.doCommand(commandList);
     }
 
     @Override

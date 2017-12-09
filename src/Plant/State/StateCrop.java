@@ -5,6 +5,8 @@ import Crop.*;
 import Plant.*;
 import Season.Season;
 
+import java.util.List;
+
 /**
  * Состояние урождай созрел
  */
@@ -73,4 +75,8 @@ public class StateCrop extends AbstrPlantState {
         }
     }
 
+    @Override
+    public void doCommand(List<Command> commandList) {
+        myPlant.myCrop.doCommand(commandList);
+    }
 }

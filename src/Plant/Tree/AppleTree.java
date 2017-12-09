@@ -1,8 +1,11 @@
 package Plant.Tree;
 
+import Command.Command;
 import Crop.Fruit.*;
 import Plant.*;
 import Season.Season;
+
+import java.util.List;
 
 
 public class AppleTree extends Plant {
@@ -24,5 +27,10 @@ public class AppleTree extends Plant {
     @Override
     public Plantable clone() throws CloneNotSupportedException {
         return new AppleTree(this.myLifeTime, this.myCost);
+    }
+
+    @Override
+    public void doCommand(List<Command> commandList) {
+        myState.doCommand(commandList);
     }
 }

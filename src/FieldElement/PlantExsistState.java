@@ -4,6 +4,8 @@ import Command.Command;
 import Crop.Cropable;
 import Season.Season;
 
+import java.util.List;
+
 public class PlantExsistState implements ArableState{
     Parsel myParsel;
     boolean isPlantDie = false;
@@ -43,11 +45,6 @@ public class PlantExsistState implements ArableState{
     }
 
     @Override
-    public void doComand(Command com) {
-        this.myParsel.myPlant.doComand(com);
-    }
-
-    @Override
     public void updateTime() {
         this.myParsel.myPlant.updateTime();
         /*
@@ -62,5 +59,10 @@ public class PlantExsistState implements ArableState{
     @Override
     public void changeSeason(Season season) {
         this.myParsel.myPlant.changeSeason(season);
+    }
+
+    @Override
+    public void doCommand(List<Command> commandList) {
+        this.myParsel.myPlant.doCommand(commandList);
     }
 }

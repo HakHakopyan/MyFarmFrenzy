@@ -31,7 +31,7 @@ public class FarmGameTestClass{
         for (int i = 1; i < 400; i++) {
             apple.updateTime();
             if (bool) {
-                apple.doComand((x) -> x.setCount((int) (x.getCount() * 0.2 + x.getCount())));
+                apple.doCommand((x) -> x.setCount((int) (x.getCount() * 0.2 + x.getCount())));
                 bool = false;
             }
             if (apple.isDie()) {
@@ -55,6 +55,12 @@ public class FarmGameTestClass{
         while (true) {
             TimeThread t = new TimeThread();
             t.start();
+        }
+        */
+        /*
+        enum Com{
+            PLOW{public double COST = 1; public double EFFECT = 0.2;},
+            FERTILIZE{public double COST = 1; public double EFFECT = 0.2;}
         }
         */
 

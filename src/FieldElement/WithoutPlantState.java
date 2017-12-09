@@ -5,6 +5,8 @@ import Crop.Cropable;
 import Plant.Plantable;
 import Season.Season;
 
+import java.util.List;
+
 public class WithoutPlantState implements ArableState {
     Parsel myParsel;
 
@@ -50,8 +52,8 @@ public class WithoutPlantState implements ArableState {
     }
 
     @Override
-    public void doComand(Command com) {
-
+    public void doCommand(List<Command> commandList) {
+        throw new IllegalArgumentException("Can not execute a command as there is no plant");
     }
 
     @Override

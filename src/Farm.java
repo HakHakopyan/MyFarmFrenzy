@@ -1,5 +1,7 @@
 import java.util.*;
 
+import Command.Command;
+import Command.Commandable;
 import Observer.*;
 import Crop.*;
 import Factory.*;
@@ -9,14 +11,14 @@ import Storage.*;
 import Visitor.*;
 
 
-public class Farm implements Observer, ObserverTime, Visitable {
+public class Farm implements Observer, ObserverTime, Visitable, Commandable {
     Storable<Cropable> myStorage = new Storage();
 
     List<Arable> myField = new ArrayList<>();
 
     Factoriable myFactory = new Factory();
 
-    MyObservable<Arable> myOb = new MyObservable();
+    MyObservable<Arable> myObservarable = new MyObservable();
 
     MyExternalObservable myExternalOb = new MyExternalObservable();
 
@@ -38,15 +40,21 @@ public class Farm implements Observer, ObserverTime, Visitable {
     public void addArable() {
 
         Arable newParsel = new Parsel(myFactory);
-        newParsel.watchFor(this.myOb);
+        newParsel.watchFor(this.myObservarable);
         myField.add(newParsel);
+    }
+
+    public int getArablesCount() {
+        return myField.size();
     }
 
     public void setGreenHouse(int position) {
         if (position > 0 && position <= this.myField.size()) {
             position--;
-            Arable greenH = new GreenHouse(this.myField.get(position));
-            greenH.watchFor(this.myOb);
+            Arable ar = this.myField.get(position);
+            Arable greenH = new GreenHouse(ar);
+            this.myObservarable.deleteObserver(ar);
+            greenH.watchFor(this.myObservarable);
             this.myField.remove(position);
             this.myField.add(position, greenH);
         }
@@ -96,26 +104,41 @@ public class Farm implements Observer, ObserverTime, Visitable {
         myTime++;
         newTime++;
 
-        myOb.notifyTimeUpdate();
+        myObservarable.notifyTimeUpdate();
         checkCrop();
 
         if (myTime == 6) {
-                System.out.println("Yep! " + newTime);
             myTime = 0;
             if (mySeason == Season.SUMMER)
                 mySeason = Season.WINTER;
             else
                 mySeason = Season.SUMMER;
 
-            myOb.notifySeasonChange(mySeason);
+            myObservarable.notifySeasonChange(mySeason);
 
             myExternalOb.setChanged();
             myExternalOb.notifyObservers(mySeason);
         }
     }
 
+    /**
+     * Освоболить хранилище/ склад урожая
+     */
+    public  void releaseStorage() {
+        this.myStorage.doEmpty();
+    }
+
     @Override
     public void acceptVisit(Visitor v) {
         this.myStorage.acceptVisit(v);
+    }
+
+    @Override
+    public void doCommand(List<Command> commandList) {
+        for (Arable ar: myField) {
+            if (ar.plantExist()) {
+                ar.doCommand(commandList);
+            }
+        }
     }
 }

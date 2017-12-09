@@ -72,9 +72,6 @@ public abstract class Plant implements Plantable, Cloneable, Costable {
         return this.myState.isDie();
     }
 
-    public void doComand(Command com) {
-    }
-
     @Override
    public abstract Plantable clone() throws CloneNotSupportedException;
 

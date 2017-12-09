@@ -1,6 +1,9 @@
 package Crop.State;
+import Command.Command;
 import Crop.*;
 import Season.Season;
+
+import java.util.List;
 
 /**
  * ripen |ˈraɪpən|  — созревать
@@ -44,5 +47,10 @@ public class StateRipen extends AbstrCropState {
     @Override
     public String getRepresentation() {
         return "Rippen";
+    }
+
+    @Override
+    public void doCommand(List<Command> commandList) {
+        commandList.forEach((x)->((Command)x).Execute(this.myCrop));
     }
 }

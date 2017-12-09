@@ -1,10 +1,13 @@
 package Crop;
 
+import Command.Command;
 import Crop.State.CropState;
 import Crop.State.StateRipen;
 import Crop.State.StateRotten;
 import Season.Season;
 import Visitor.Visitor;
+
+import java.util.List;
 
 /**
  * crop [cra:p] - урожай
@@ -128,5 +131,10 @@ public abstract class Crop implements Cropable {
         if (season.ordinal() >= Season.WINTER.ordinal()) {
             this.changeState(new StateRotten(this));
         }
+    }
+
+    @Override
+    public void doCommand(List<Command> commandList) {
+        this.myState.doCommand(commandList);
     }
 }

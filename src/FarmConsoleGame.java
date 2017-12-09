@@ -1,15 +1,21 @@
+import Command.Command;
 import Visitor.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FarmConsoleGame {
     static protected FarmNewsListener newsL = new FarmNewsListener();
     static Farm farm = new Farm(1, newsL);
-    BigDecimal myMoney = new BigDecimal("20");
+    static BigDecimal myMoney = new BigDecimal("20");
+
+    static final int fieldElementPlowCost =1;
+    static final int fieldElementFertilizeCost =2;
+
 
     public static void main(String[] args) {
 
@@ -59,38 +65,87 @@ public class FarmConsoleGame {
             case "" :
                 updateTime(1);
                 break;
+            case "M" :
+                System.out.println("Wallet -> " + myMoney.toString());
+                break;
             case "I" :
                 presetnInformation();
                 break;
             case "S" :
-                break;;
+                BigDecimal sellMoney = new BigDecimal(calculateTotalStorageCost());
+                System.out.print("Sell -> " + sellMoney + " ");
+                myMoney = myMoney.add(sellMoney);
+                System.out.println("Wallet -> " + myMoney.toString());
+                farm.releaseStorage();
+                break;
             case "C" :
-                calculateTotalStorageCost();
+                System.out.println("The total cost of the crop in the storage: " + calculateTotalStorageCost());
                 break;
-            case "P" :
-                break;
-            case "F" :
+        }
+
+        return true;
+    }
+
+    static double calculateTotalStorageCost() {
+        Visitor myVisitor = new VisitorTotalCost();
+        farm.acceptVisit(myVisitor);
+        return myVisitor.getValue();
+    }
+
+    public void doCommand(String[] strs) {
+        List<Command> commands = new ArrayList<Command>();
+        for (int i = 1; i< strs.length; i++) {
+            switch (strs[i]) {
+                case "P" :
+                    // овысить урожайность на 20%
+                    if(!addSimpleCommmand(commands, fieldElementPlowCost, 0.2))
+                        System.out.println("Plow -> not enough money");;
+                    break;
+                case "F" :
+                    // овысить урожайность на 30%
+                    if (!addSimpleCommmand(commands, fieldElementFertilizeCost, 0.3))
+                        System.out.println("Fertilize -> not enough money");
+                    break;
+                default:
+                    System.out.println(strs[i] + " -> invalid command\n");
+            }
+        }
+
+        if (commands.size() > 0) {
+            try {
+                farm.doCommand(commands);
+            } catch (IllegalArgumentException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
     }
 
-    static void calculateTotalStorageCost() {
-        Visitor myVisitor = new VisitorTotalCost();
-        farm.acceptVisit(myVisitor);
-        System.out.println("the total cost of the crop in the storage: " + myVisitor.getValue());
+    static boolean addSimpleCommmand(List<Command> com, double cost, double effect) {
+        BigDecimal totalCost = new BigDecimal(farm.getArablesCount() * cost);
+        if (myMoney.compareTo(totalCost) >= 0 )
+        {
+            myMoney.subtract(totalCost);
+            com.add((x) -> x.setCount((int) (x.getCount() * effect + x.getCount())));
+            return true;
+        }
+        return false;
     }
 
     static void subUserCom(String[] subStr) {
+
     }
 
     static void presetnInformation() {
         System.out.println("Команды:");
 
+        System.out.println("    M -> amount of accumulated money -> wallet");
         System.out.println("    <number> <Plant name first litter -> set selected plant to Field element with <number>");
         System.out.println("    S -> sell the whole crop in storage");
         //System.out.println("    C <Command> -> execute a command by name <Command>");
         System.out.println("    C -> calculate the total cost of the crop in the storage");
-        System.out.println("    P -> to plow the field. Cost = field elemet count*1, Crop count += 20%");
-        System.out.println("    F -> to plow the field. Cost = field element count*2, Crop count += 30%");
+        System.out.println("    F <F> or <P>... command for the field");
+        System.out.println("        P -> to plow the field. Cost = field elemet count*1, Crop count += 20%");
+        System.out.println("        F -> to fertilize the field. Cost = field element count*2, Crop count += 30%");
         System.out.println("    E -> exit");
     }
 
@@ -102,7 +157,7 @@ public class FarmConsoleGame {
     }
 
     static void updateTime(int count) {
-        for (int i = 0; i < count; count++) {
+        for (int i = 0; i < count; i++) {
             farm.updateTime();
         }
     }

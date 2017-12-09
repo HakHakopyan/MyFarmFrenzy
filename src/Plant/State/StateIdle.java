@@ -5,6 +5,8 @@ import Crop.*;
 import Plant.*;
 import Season.Season;
 
+import java.util.List;
+
 /**
  * Состояние простоя, когда зима растение ничего не делает
  */
@@ -51,5 +53,10 @@ public class StateIdle extends AbstrPlantState{
     @Override
     public String getRepresentation() {
         return "Idle";
+    }
+
+    @Override
+    public void doCommand(List<Command> commandList) {
+        throw new IllegalArgumentException("Idle, cann't do coammand");
     }
 }

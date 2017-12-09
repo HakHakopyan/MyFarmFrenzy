@@ -5,6 +5,7 @@ import Crop.Cropable;
 import Observer.MyObservable;
 import Season.Season;
 
+import java.util.List;
 import java.util.Observable;
 
 public class GreenHouse implements Arable {
@@ -52,8 +53,8 @@ public class GreenHouse implements Arable {
     }
 
     @Override
-    public void doComand(Command com) {
-        this.myArable.doComand(com);
+    public void doCommand(List<Command> commandList) {
+        this.myArable.doCommand(commandList);
     }
 
     @Override

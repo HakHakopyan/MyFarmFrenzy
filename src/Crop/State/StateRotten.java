@@ -1,7 +1,10 @@
 package Crop.State;
 
+import Command.Command;
 import Crop.*;
 import Season.Season;
+
+import java.util.List;
 
 /**
  * Состояние Урожай испорчен
@@ -43,5 +46,10 @@ public class StateRotten extends AbstrCropState {
     @Override
     public String getRepresentation() {
         return "Rotten";
+    }
+
+    @Override
+    public void doCommand(List<Command> commandList) {
+        //nothing because Crop is Rotten
     }
 }

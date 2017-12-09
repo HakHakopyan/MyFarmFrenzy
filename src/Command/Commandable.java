@@ -1,5 +1,7 @@
 package Command;
 
+import java.util.List;
+
 public interface Commandable {
-    public void doComand(Command com);
+    public void doCommand(List<Command> commandList);
 }

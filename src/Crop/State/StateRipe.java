@@ -1,7 +1,10 @@
 package Crop.State;
 
+import Command.Command;
 import Crop.*;
 import Season.Season;
+
+import java.util.List;
 
 /**
  * Ripe |raɪp| созрел
@@ -47,5 +50,10 @@ public class StateRipe extends AbstrCropState {
     @Override
     public String getRepresentation() {
         return "Ripe";
+    }
+
+    @Override
+    public void doCommand(List<Command> commandList) {
+        // nothing since the fruit is already ripe
     }
 }

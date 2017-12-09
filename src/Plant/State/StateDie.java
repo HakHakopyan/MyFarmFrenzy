@@ -5,6 +5,8 @@ import Plant.*;
 import Crop.*;
 import Season.Season;
 
+import java.util.List;
+
 public class StateDie extends AbstrPlantState {
 
     public StateDie(Plant myPlant) {
@@ -46,4 +48,8 @@ public class StateDie extends AbstrPlantState {
         return false;
     }
 
+    @Override
+    public void doCommand(List<Command> commandList) {
+        throw new IllegalArgumentException("Die, cann't do coammand");
+    }
 }
