@@ -51,10 +51,12 @@ public class Farm implements Observer, ObserverTime, Visitable, Commandable {
         return myField.size();
     }
 
-    public void setGreenHouse(int position) {
+    public boolean setGreenHouse(int position) {
         if (position > 0 && position <= this.myField.size()) {
             position--;
             Arable ar = this.myField.get(position);
+            if (ar instanceof GreenHouse)
+                return false;
             Arable greenH = new GreenHouse(ar);
             this.myObservarable.deleteObserver(ar);
             greenH.watchFor(this.myObservarable);
@@ -62,6 +64,7 @@ public class Farm implements Observer, ObserverTime, Visitable, Commandable {
             this.myField.add(position, greenH);
         } else
             throw new IllegalArgumentException("Wrong position in Field -> " + position);
+        return true;
     }
 
     public void setPlant(String plantName, int position) {

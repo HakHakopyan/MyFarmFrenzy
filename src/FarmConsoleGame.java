@@ -13,7 +13,7 @@ import java.util.Map;
 public class FarmConsoleGame {
     static protected FarmNewsListener newsL = new FarmNewsListener();
     static Farm farm = new Farm(2, newsL);
-    static BigDecimal myWallet = new BigDecimal("20");
+    static BigDecimal myWallet = new BigDecimal("50");
 
     static final int fieldElementPlowCost =1;
     static final int fieldElementFertilizeCost =2;
@@ -28,7 +28,7 @@ public class FarmConsoleGame {
         addNewArable();
         */
 
-        writeFieldRepresentation();
+        writeRepresentation(farm.getFieldRepresentation());
 
         while (true) {
             try {
@@ -62,32 +62,37 @@ public class FarmConsoleGame {
         }
 
         switch (userCom) {
-            case "" :
-                updateTime(1);
+            case "" : updateTime(1);
                 break;
             case "A" :
-                if (addNewArable()) writeFieldRepresentation();
+                if (addNewArable()) writeRepresentation(farm.getFieldRepresentation());
                 break;
-            case "W" :
-                System.out.println("Wallet -> " + myWallet.toString());
+            case "C" : System.out.println("The total cost of the crop in the storage: " + calculateTotalStorageCost());
                 break;
-            case "I" :
-                presetnInformation();
+            case "F" : writeRepresentation(farm.getFieldRepresentation());
                 break;
-            case "F" :
-                writeFieldRepresentation();
+            case "I" : presetnInformation();
                 break;
-            case "S" :
-                sellAllinStorage();
+            case "P" : showPlantsPossibleForPlanting();
                 break;
-            case "C" :
-                System.out.println("The total cost of the crop in the storage: " + calculateTotalStorageCost());
+            case "S" : sellAllinStorage();
                 break;
-            default:
-                System.out.println(userCom + " -> Wrong command");
+            case "W" : System.out.println("Wallet -> " + myWallet.toString());
+                break;
+            default: System.out.println(userCom + " -> Wrong command");
         }
 
         return true;
+    }
+
+    static void showPlantsPossibleForPlanting() {
+        Map<String, Double> plantsWithCost = farm.getPlantNamesWCost();
+        String[] showInfo = new String[plantsWithCost.size()];
+        int i = 0;
+        for(String name: plantsWithCost.keySet()) {
+            showInfo[i] = name + "->" + plantsWithCost.get(name);
+        }
+        writeRepresentation(showInfo);
     }
 
     static void sellAllinStorage() {
@@ -99,7 +104,7 @@ public class FarmConsoleGame {
     }
 
     static boolean addNewArable() {
-        double arablePrice = ArableConst.PRICE;
+        double arablePrice = ArableConst.PARSEL_PRICE;
         if (compareWIthWallet(arablePrice)) {
             farm.addArable();
             deductFromTheWallet(arablePrice);
@@ -122,11 +127,31 @@ public class FarmConsoleGame {
         }
         switch (subStr[0]) {
             case "C" : doCommand(subStr);
-
+                break;
+            case "G" : buildGreenHouse(subStr[1]);
                 break;
             default:
                 System.out.println("Wrong Command " + subStr[0]);
         }
+    }
+
+    public static void buildGreenHouse(String position) {
+        if (isNumber(position)) {
+            try {
+                if (!compareWIthWallet(ArableConst.GREENHOUSE_PRICE)) {
+                    System.out.println("There is not enough money to build a greenhouse, you need " +
+                            ArableConst.GREENHOUSE_PRICE);
+                    return;
+                }
+                if (farm.setGreenHouse(Integer.valueOf(position)))
+                    System.out.println("GreenHouse is built on the position of " + position + " you spent "
+                            + ArableConst.GREENHOUSE_PRICE);
+                else System.out.println("In position " + position + " GreenHouse is already exist");
+            } catch (IllegalArgumentException ex) {
+                System.out.println(ex.getMessage());
+            }
+        } else
+            System.out.println(position + " is not integer number :(");
     }
 
     public static void doCommand(String[] strs) {
@@ -168,7 +193,7 @@ public class FarmConsoleGame {
         BigDecimal totalCost = new BigDecimal(farm.getArablesCount() * cost);
         if (myWallet.compareTo(totalCost) >= 0 )
         {
-            myWallet.subtract(totalCost);
+            myWallet = myWallet.subtract(totalCost);
             com.add((x) -> x.setCount((int) (x.getCount() * effect + x.getCount())));
             return true;
         }
@@ -216,6 +241,8 @@ public class FarmConsoleGame {
         System.out.println("        P -> to plow the field. Cost = field elemet count*1, Crop count += 20%");
         System.out.println("        F -> to fertilize the field. Cost = field element count*2, Crop count += 30%");
         System.out.println("    F -> Field representation");
+        System.out.println("    G <Number> -> build a GreenHouse in the field position <Number>");
+        System.out.println("    P -> show plants possible for planting on the Field");
         System.out.println("    S -> sell the whole crop in storage");
         System.out.println("    W -> amount of accumulated money -> wallet");
         System.out.println("    E -> exit");
@@ -237,8 +264,7 @@ public class FarmConsoleGame {
     private final int arableContInLine = 2;
     private final int charactersContInName = 10;
 
-    public static void writeFieldRepresentation() {
-        String[] sRep = farm.getFieldRepresentation();
+    public static void writeRepresentation(String[] sRep) {
 
         for (int i = 0; i < sRep.length;){
             int position = i;
