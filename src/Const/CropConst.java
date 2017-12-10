@@ -1,8 +1,9 @@
 package Const;
 
+/**
+ * Constants for inintial Crops
+ */
 public interface CropConst {
-    //shelfLife
-    //ripenTime
 
     int APPLE_RT = 3;
     int APPLE_SL = 2;

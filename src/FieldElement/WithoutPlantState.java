@@ -23,7 +23,7 @@ public class WithoutPlantState implements ArableState {
             throw new IllegalArgumentException("Plant with name" + plantName + " is not Exsist");
 
         this.myParsel.myPlant = newPlant;
-        this.myParsel.changeState(new PlantExsistState(this.myParsel));
+        this.myParsel.changeState(myParsel.myPlantExistState);
     }
 
     @Override

@@ -68,7 +68,7 @@ public class FarmGameTestClass{
         Farm farm = new Farm(1, newsL);
         farm.setPlant("AppleTree", 1);
         //farm.setPlant("AppleTree", 3);
-        List<String> sRep = farm.getFieldRepresentation();
+        String[] sRep = farm.getFieldRepresentation();
         int i = 1;
         for (String s : sRep) {
             System.out.println(i + " " + s);

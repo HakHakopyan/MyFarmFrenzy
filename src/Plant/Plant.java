@@ -23,6 +23,7 @@ public abstract class Plant implements Plantable, Cloneable, Costable {
     public Plant(int lifeTime, double cost, Season season) {
         this.myLifeTime = lifeTime;
         this.season = season;
+        this.myCost = cost;
         changeState(new StateCrop(this));
     }
 

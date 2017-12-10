@@ -3,6 +3,8 @@ package Factory;
 import Crop.Cropable;
 import Plant.Plantable;
 
+import java.util.Map;
+
 /**
  * Able to produce plants or crops or both
  */
@@ -32,8 +34,8 @@ public interface Factoriable {
     public void registre(Class cl);
 
     /**
-     * get Names of the Plants that the factory can create
-     * @return Plant Names
+     * Method returns the names of plants that we can create with their cost
+     * @return A Map that contains the name of the plant in the key and its cost
      */
-    public String[] getPlantNames();
+    public Map<String, Double> getPlantNamesWithCost();
 }

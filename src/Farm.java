@@ -30,13 +30,16 @@ public class Farm implements Observer, ObserverTime, Visitable, Commandable {
 
     Farm(int arableCount, Observer externalObserver) {
         myExternalOb.addObserver(externalObserver);
-        myFactory.registre(Factory.PlantInstances.class);
+        myFactory.registre(PlantInstances.class);
 
         for (int i = 1; i <= arableCount; i++) {
             addArable();
         }
     }
 
+    /**
+     * Add new Field element
+     */
     public void addArable() {
 
         Arable newParsel = new Parsel(myFactory);
@@ -57,14 +60,17 @@ public class Farm implements Observer, ObserverTime, Visitable, Commandable {
             greenH.watchFor(this.myObservarable);
             this.myField.remove(position);
             this.myField.add(position, greenH);
-        }
+        } else
+            throw new IllegalArgumentException("Wrong position in Field -> " + position);
     }
 
     public void setPlant(String plantName, int position) {
         if (position > 0 && position <= this.myField.size()) {
             position--;
             this.myField.get(position).setPlant(plantName);
-        }
+            this.myField.get(position).changeSeason(mySeason);
+        } else
+            throw new IllegalArgumentException("Wrong position in the Field -> " + position);
     }
 
     @Override
@@ -85,24 +91,25 @@ public class Farm implements Observer, ObserverTime, Visitable, Commandable {
             }
         }
     }
-    public List<String> getFieldRepresentation() {
-        List<String> representList = new ArrayList<>();
+
+    public String[] getFieldRepresentation() {
+        String[] fRep = new String[this.myField.size()];
+        int i = 0;
         for (Arable ar: this.myField) {
-            representList.add(ar.getRepresentation());
+            fRep[i] = ar.getRepresentation();
+            i++;
         }
 
-        return representList;
+        return fRep;
     }
 
     public void checkStorage(Visitor visitor) {
         this.myStorage.acceptVisit(visitor);
     }
 
-    int newTime = 0;
     @Override
     public void updateTime() {
         myTime++;
-        newTime++;
 
         myObservarable.notifyTimeUpdate();
         checkCrop();
@@ -142,7 +149,11 @@ public class Farm implements Observer, ObserverTime, Visitable, Commandable {
         }
     }
 
-    public String[] getPlantNames() {
-        return myFactory.getPlantNames();
+    /**
+     * Method returns the names of plants that we can create with their cost
+     * @return A Map that contains the name of the plant in the key and its cost
+     */
+    public Map<String, Double> getPlantNamesWCost() {
+        return myFactory.getPlantNamesWithCost();
     }
 }

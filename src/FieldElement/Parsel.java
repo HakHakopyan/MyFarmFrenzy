@@ -8,7 +8,6 @@ import Season.Season;
 import Observer.*;
 
 import java.util.List;
-import java.util.Observable;
 
 public class Parsel implements Arable {
 
@@ -16,9 +15,12 @@ public class Parsel implements Arable {
     Plantable myPlant;
     ArableState myState;
 
+    ArableState myPlantExistState = new PlantExsistState(this);
+    ArableState myWithoutPlantState = new WithoutPlantState(this);
+
     public Parsel(Factoriable factory) {
         this.myFactory = factory;
-        this.changeState(new WithoutPlantState(this));
+        this.changeState(myWithoutPlantState);
     }
 
     public void setPlant(String plantName) {

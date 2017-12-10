@@ -2,6 +2,7 @@ package Factory;
 
 import Annotations.GetPlant;
 import Annotations.What;
+import Base.Costable;
 import Crop.Cropable;
 import Plant.Plant;
 import Plant.Plantable;
@@ -61,18 +62,16 @@ public class Factory implements Factoriable {
     }
 
     /**
-     * gives the names of plants that we can create with the help of this factory
-     * @return Plant Names which we can create with
+     * Method returns the names of plants that we can create with their cost
+     * @return A Map that contains the name of the plant in the key and its cost
      */
     @Override
-    public String[] getPlantNames() {
-        String[] strings = new String[myPlants.size()];
-        int i=0;
+    public Map<String, Double> getPlantNamesWithCost() {
+        Map<String, Double> namesWCost = new HashMap<>();
         for (Object key: myPlants.keySet()) {
-            strings[i] = key.toString();
-            i++;
+            namesWCost.put(key.toString(), ((Costable) myPlants.get(key)).getCost());
         }
 
-        return strings;
+        return namesWCost;
     }
 }

@@ -16,6 +16,7 @@ public class PlantExsistState implements ArableState{
 
     @Override
     public void setPlant(String plantName) {
+        this.myParsel.changeState(this.myParsel.myWithoutPlantState);
         this.myParsel.setPlant(plantName);
     }
 
