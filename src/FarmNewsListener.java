@@ -1,7 +1,6 @@
-import Crop.Crop;
-import Season.Season;
+import crop.Crop;
+import season.Season;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class FarmNewsListener implements Observer{
@@ -15,7 +14,7 @@ public class FarmNewsListener implements Observer{
                     arg.getClass().getSimpleName() + " " + ((Crop)arg).getCount() + "шт.");
         } else
             if (arg.getClass().equals(Season.class)) {
-                news.add("Change Season: " + arg);
+                news.add("Change season: " + arg);
             }
 
     }

@@ -1,17 +1,6 @@
-import Crop.Cropable;
-import Factory.*;
-import FieldElement.Arable;
-import FieldElement.GreenHouse;
-import FieldElement.Parsel;
-import Plant.Plantable;
-import Plant.Tree.AppleTree;
-import Storage.*;
-import Visitor.VisitorTotalCost;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
 
 
 public class FarmGameTestClass{
@@ -19,14 +8,14 @@ public class FarmGameTestClass{
 
         /*
         Plantable apple = new AppleTree(20 * 12, 10);
-        Factoriable factory = new Factory();
-        factory.registre(Plants.class);
+        Factoriable factory = new factory();
+        factory.registration(Plants.class);
         Arable gHouse = new GreenHouse(new Parsel(factory));
 
         gHouse.setPlant("AppleTree");
         apple = gHouse;
 
-        Storable<Cropable> myStorage = new Storage();
+        Storable<Cropable> myStorage = new storage();
         boolean bool = true;
         for (int i = 1; i < 400; i++) {
             apple.updateTime();
@@ -67,7 +56,7 @@ public class FarmGameTestClass{
         FarmNewsListener newsL = new FarmNewsListener();
         Farm farm = new Farm(1, newsL);
         farm.setPlant("AppleTree", 1);
-        //farm.setPlant("AppleTree", 3);
+        //myFarm.setPlant("AppleTree", 3);
         String[] sRep = farm.getFieldRepresentation();
         int i = 1;
         for (String s : sRep) {

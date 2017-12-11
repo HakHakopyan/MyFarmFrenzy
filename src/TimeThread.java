@@ -1,10 +1,13 @@
-import Season.Season;
+import season.Season;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
+@Deprecated
+/**
+ * This class not used in the program, because it is difficulty for Console
+ */
 public class TimeThread extends Thread {
     List<Observable> myObs = new ArrayList<>();
 

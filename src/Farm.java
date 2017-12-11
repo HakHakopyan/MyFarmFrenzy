@@ -1,36 +1,56 @@
 import java.util.*;
 
-import Command.Command;
-import Command.Commandable;
-import Observer.*;
-import Crop.*;
-import Factory.*;
-import FieldElement.*;
-import Season.Season;
-import Storage.*;
-import Visitor.*;
+import command.Command;
+import command.Commandable;
+import observer.*;
+import crop.*;
+import factory.*;
+import fieldelement.*;
+import plant.Plant;
+import season.Season;
+import storage.*;
+import visitor.*;
 
 
 public class Farm implements Observer, ObserverTime, Visitable, Commandable {
     Storable<Cropable> myStorage = new Storage();
 
-    List<Arable> myField = new ArrayList<>();
-
+    /**
+     * contains a reference to instances of objects in the field sections
+     */
+    List<Arable> myFarmField = new ArrayList<>();
+    /**
+     * contains a reference to the factory, which is used to create new plants
+     */
     Factoriable myFactory = new Factory();
-
+    /**
+     * object for which the observed object inside the class farm
+     */
     MyObservable<Arable> myObservarable = new MyObservable();
 
+    /**
+     * object for which the observed object outside the class farm
+     */
     MyExternalObservable myExternalOb = new MyExternalObservable();
 
-    TimeThread tThread = new TimeThread();
-
+    /**
+     * This parameter is needed when creating new plants, in order to transfer to them the current season after creation
+     */
     Season mySeason = Season.SUMMER;
 
+    /**
+     * necessary to calculate the moments of transition between seasons
+     */
     int myTime = 0;
 
+    /**
+     * Initialize fields
+     * @param arableCount Count of {@link Parsel Parsel} on the Field
+     * @param externalObserver link to the outside observer
+     */
     Farm(int arableCount, Observer externalObserver) {
         myExternalOb.addObserver(externalObserver);
-        myFactory.registre(PlantInstances.class);
+        myFactory.registration(PlantInstances.class);
 
         for (int i = 1; i <= arableCount; i++) {
             addArable();
@@ -44,34 +64,48 @@ public class Farm implements Observer, ObserverTime, Visitable, Commandable {
 
         Arable newParsel = new Parsel(myFactory);
         newParsel.watchFor(this.myObservarable);
-        myField.add(newParsel);
+        myFarmField.add(newParsel);
     }
 
+    /**
+     * method returns the number of parsel on the field
+     * @return parsels count
+     */
     public int getArablesCount() {
-        return myField.size();
+        return myFarmField.size();
     }
 
+    /**
+     * Set Green House in position if it is not there
+     * @param position position {@link Parsel parsel} on the farm field
+     * @return false if in position exist greenHouse
+     */
     public boolean setGreenHouse(int position) {
-        if (position > 0 && position <= this.myField.size()) {
+        if (position > 0 && position <= this.myFarmField.size()) {
             position--;
-            Arable ar = this.myField.get(position);
+            Arable ar = this.myFarmField.get(position);
             if (ar instanceof GreenHouse)
                 return false;
             Arable greenH = new GreenHouse(ar);
             this.myObservarable.deleteObserver(ar);
             greenH.watchFor(this.myObservarable);
-            this.myField.remove(position);
-            this.myField.add(position, greenH);
+            this.myFarmField.remove(position);
+            this.myFarmField.add(position, greenH);
         } else
             throw new IllegalArgumentException("Wrong position in Field -> " + position);
         return true;
     }
 
+    /**
+     * set new {@link Plant plant} to be placed in position on the farm field
+     * @param plantName The name of the plant is the reference to the object to be placed on the position
+     * @param position position one farm field
+     */
     public void setPlant(String plantName, int position) {
-        if (position > 0 && position <= this.myField.size()) {
+        if (position > 0 && position <= this.myFarmField.size()) {
             position--;
-            this.myField.get(position).setPlant(plantName);
-            this.myField.get(position).changeSeason(mySeason);
+            this.myFarmField.get(position).setPlant(plantName);
+            this.myFarmField.get(position).changeSeason(mySeason);
         } else
             throw new IllegalArgumentException("Wrong position in the Field -> " + position);
     }
@@ -83,8 +117,11 @@ public class Farm implements Observer, ObserverTime, Visitable, Commandable {
         }
     }
 
+    /**
+     * check whether there is a new crop in the farm {@link Storage Storage} and notify the external observers
+     */
     public void checkCrop() {
-        for (Arable a: this.myField) {
+        for (Arable a: this.myFarmField) {
             if (a.isCropReady()) {
                 Cropable newCrop = a.getCrop();
                 myStorage.store(newCrop);
@@ -95,10 +132,14 @@ public class Farm implements Observer, ObserverTime, Visitable, Commandable {
         }
     }
 
+    /**
+     * Get information about the state of the field - what is on it
+     * @return field representation to the parsels
+     */
     public String[] getFieldRepresentation() {
-        String[] fRep = new String[this.myField.size()];
+        String[] fRep = new String[this.myFarmField.size()];
         int i = 0;
-        for (Arable ar: this.myField) {
+        for (Arable ar: this.myFarmField) {
             fRep[i] = ar.getRepresentation();
             i++;
         }
@@ -106,6 +147,10 @@ public class Farm implements Observer, ObserverTime, Visitable, Commandable {
         return fRep;
     }
 
+    /**
+     * check the warehouse for the presence of the crop
+     * @param visitor
+     */
     public void checkStorage(Visitor visitor) {
         this.myStorage.acceptVisit(visitor);
     }
@@ -139,13 +184,13 @@ public class Farm implements Observer, ObserverTime, Visitable, Commandable {
     }
 
     @Override
-    public void acceptVisit(Visitor v) {
-        this.myStorage.acceptVisit(v);
+    public void acceptVisit(Visitor visitor) {
+        this.myStorage.acceptVisit(visitor);
     }
 
     @Override
     public void doCommand(List<Command> commandList) {
-        for (Arable ar: myField) {
+        for (Arable ar: myFarmField) {
             if (ar.plantExist()) {
                 ar.doCommand(commandList);
             }
