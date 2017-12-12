@@ -3,11 +3,12 @@ package fieldelement;
 import command.Command;
 import crop.Cropable;
 import plant.Plantable;
+import plant.state.PlantState;
 import season.Season;
 
 import java.util.List;
 
-public class WithoutPlantState implements ArableState {
+public class WithoutPlantState implements ArableState{
     Parsel myParsel;
 
     public WithoutPlantState(Parsel parsel) {

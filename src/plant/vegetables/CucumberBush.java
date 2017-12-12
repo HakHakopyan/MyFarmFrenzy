@@ -35,7 +35,7 @@ public class CucumberBush extends Plant{
      */
     @Override
     public Plantable clone() throws CloneNotSupportedException {
-        return new TomatoBush(this.myLifeTime, this.myCost);
+        return new CucumberBush(this.myLifeTime, this.myCost);
     }
 
     /**

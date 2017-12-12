@@ -1,23 +1,35 @@
 package plant;
 
 import base.Costable;
+import base.Generable;
 import crop.*;
-import plant.state.PlantState;
 import plant.state.*;
 import season.Season;
 
-public abstract class Plant implements Plantable, Cloneable, Costable {
+public abstract class Plant implements Plantable, Cloneable, Costable, Generable {
     protected PlantState myState;
     /**
      * Время жизни растения
      */
     public int myLifeTime;
 
+    /**
+     * стоимость растения
+     */
     protected double myCost;
 
+    /**
+     * фактически устанавливает может ли растение выживать зимой, если Season.Winter то да
+     */
     public Season season;
 
+    /**
+     * ссылка на экземпляр урожая
+     */
     public Cropable myCrop;
+
+    public PlantState myCropState = new StateCrop(this);
+    public PlantState myIdleState = new StateIdle(this);
 
     /**
      * constructor - initializes the fields of the Plant

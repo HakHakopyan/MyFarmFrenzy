@@ -84,6 +84,7 @@ public class FarmConsoleGame {
                 break;
             case "A" :
                 if (addNewArable()) writeRepresentation(myFarm.getFieldRepresentation());
+                else System.out.println("Not enough money :(");
                 break;
             case "C" : System.out.println("The total cost of the crop in the storage: " + calculateTotalStorageCost());
                 break;
@@ -93,9 +94,10 @@ public class FarmConsoleGame {
                 break;
             case "P" : showPlantsPossibleForPlanting();
                 break;
-            case "S" : sellAllinStorage();
+            case "S" : System.out.print("Sell -> " + sellAllinStorage() + " ");
+                System.out.println("Wallet -> " + myWallet);
                 break;
-            case "W" : System.out.println("Wallet -> " + myWallet.toString());
+            case "W" : System.out.println("Wallet -> " + myWallet);
                 break;
             default: System.out.println(userCom + " -> Wrong command");
         }
@@ -120,12 +122,11 @@ public class FarmConsoleGame {
     /**
      * Продать весь накопившийся на складе урожай
      */
-    public static void sellAllinStorage() {
+    public static BigDecimal sellAllinStorage() {
         BigDecimal sellMoney = new BigDecimal(calculateTotalStorageCost());
-        System.out.print("Sell -> " + sellMoney + " ");
         myWallet = myWallet.add(sellMoney);
-        System.out.println("Wallet -> " + myWallet.toString());
         myFarm.releaseStorage();
+        return sellMoney;
     }
 
     /**
@@ -139,7 +140,6 @@ public class FarmConsoleGame {
             deductFromTheWallet(arablePrice);
             return true;
         }
-        System.out.println("Not enough money :(");
         return false;
     }
 
@@ -165,7 +165,7 @@ public class FarmConsoleGame {
         switch (subStr[0]) {
             case "C" : doCommand(subStr);
                 break;
-            case "G" : buildGreenHouse(subStr[1]);
+            case "G" : myWallet = myWallet.subtract( new BigDecimal(buildGreenHouseIfPossible(subStr[1])));
                 break;
             default:
                 System.out.println("Wrong command " + subStr[0]);
@@ -175,24 +175,27 @@ public class FarmConsoleGame {
     /**
      * Строит теплицу по заданной позиции
      * @param position number of a piece of land on which to build a greenhouse
+     * @return 0 - еcли теплица не построена, Цена теплицы если она построена.
      */
-    public static void buildGreenHouse(String position) {
+    public static double buildGreenHouseIfPossible(String position) {
         if (isNumber(position)) {
             try {
                 if (!compareWIthWallet(ArableConst.GREENHOUSE_PRICE)) {
                     System.out.println("There is not enough money to build a greenhouse, you need " +
                             ArableConst.GREENHOUSE_PRICE);
-                    return;
-                }
-                if (myFarm.setGreenHouse(Integer.valueOf(position)))
-                    System.out.println("GreenHouse is built on the position of " + position + " you spent "
-                            + ArableConst.GREENHOUSE_PRICE);
+                } else
+                    if (myFarm.setGreenHouse(Integer.valueOf(position))) {
+                        System.out.println("GreenHouse is built on the position of " + position + " you spent "
+                                + ArableConst.GREENHOUSE_PRICE);
+                        return ArableConst.GREENHOUSE_PRICE;
+                    }
                 else System.out.println("In position " + position + " GreenHouse is already exist");
             } catch (IllegalArgumentException ex) {
                 System.out.println(ex.getMessage());
             }
         } else
             System.out.println(position + " is not integer number :(");
+        return 0;
     }
 
     /**
@@ -220,14 +223,14 @@ public class FarmConsoleGame {
                     System.out.println(strs[i] + " -> invalid command\n");
             }
         }
-        String writeCommsnds = "Executed commands: ";
+        String writeCommands = "Executed commands: ";
         for (String comName: executedCommands)
-            writeCommsnds += comName + " ";
+            writeCommands += comName + " ";
 
         if (commands.size() > 0) {
             try {
                 myFarm.doCommand(commands);
-                System.out.println(writeCommsnds);
+                System.out.println(writeCommands);
             } catch (IllegalArgumentException ex) {
                 System.out.println(ex.getMessage());
             }

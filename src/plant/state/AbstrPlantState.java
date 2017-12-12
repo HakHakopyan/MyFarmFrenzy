@@ -1,4 +1,5 @@
 package plant.state;
+import base.Generable;
 import plant.*;
 
 public abstract class AbstrPlantState implements PlantState{

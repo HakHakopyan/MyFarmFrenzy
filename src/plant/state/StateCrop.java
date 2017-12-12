@@ -8,7 +8,7 @@ import season.Season;
 import java.util.List;
 
 /**
- * Состояние урождай созрел
+ * Состояние урожай созрел
  */
 public class StateCrop extends AbstrPlantState {
 
@@ -53,7 +53,7 @@ public class StateCrop extends AbstrPlantState {
     public void changeSeason(Season season) {
         if (season == Season.WINTER){
             if (this.myPlant.season == Season.WINTER) {
-                this.myPlant.changeState(new StateIdle(this.myPlant));
+                this.myPlant.changeState(this.myPlant.myIdleState);
             } else
                 this.myPlant.changeState(new StateDie((this.myPlant)));
         }

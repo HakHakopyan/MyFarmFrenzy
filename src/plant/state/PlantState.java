@@ -1,10 +1,5 @@
 package plant.state;
-import base.Generable;
-import command.Commandable;
-import observer.ObserverSeason;
-import base.Representable;
 
-import observer.ObserverTime;
 import plant.Plantable;
 
 /**

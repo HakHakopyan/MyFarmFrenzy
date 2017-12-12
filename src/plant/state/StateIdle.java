@@ -26,7 +26,7 @@ public class StateIdle extends AbstrPlantState{
     @Override
     public void changeSeason(Season season) {
         if (season == Season.SUMMER)
-            this.myPlant.changeState(new StateCrop(this.myPlant));
+            this.myPlant.changeState(this.myPlant.myCropState);
     }
 
     @Override

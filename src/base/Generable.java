@@ -11,11 +11,11 @@ public interface Generable {
      * @return a reference to an instance of a crop heir
      */
     //@What(description = "Only crop inheritor")
-    Cropable getCrop();
+    public abstract Cropable getCrop();
 
     /**
      * is Crop Ready )
      * @return true f crop Ripe (ready to collect)
      */
-    boolean isCropReady();
+    public abstract boolean isCropReady();
 }
