@@ -25,7 +25,6 @@ public class Storage<C extends Cropable> implements Storable{
         if (myCrops.containsKey(cropName)) {
             Cropable crop = myCrops.get(cropName);
             crop.setCount(crop.getCount() + newCrop.getCount());
-            newCrop = null;
         } else
             myCrops.put(newCrop.getClass().getSimpleName(),(C) newCrop);
     }

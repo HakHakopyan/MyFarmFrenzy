@@ -8,7 +8,6 @@ import java.util.*;
  * информируется через MyExternalObserver об изменениях состояний объектов внутри Farm
  */
 public class FarmNewsListener implements Observer{
-    Boolean myIsNews = false;
     List<String> news = new ArrayList<>();
 
     @Override
@@ -39,7 +38,6 @@ public class FarmNewsListener implements Observer{
         List<String> retNews = new ArrayList<>();
         retNews.addAll(news);
         news.clear();
-        myIsNews = false;
 
         return retNews;
     }
